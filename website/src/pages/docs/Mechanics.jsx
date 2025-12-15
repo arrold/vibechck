@@ -15,7 +15,7 @@ export default function Mechanics() {
 
             <div className="space-y-12">
                 {/* HALLUCINATION */}
-                <section className="space-y-4">
+                <section className="space-y-4 mt-8">
                     <h2 className="text-2xl font-bold text-[#FAFAFA] flex items-center gap-3">
                         <span className="text-3xl">👻</span> Hallucination Detector
                     </h2>
@@ -78,6 +78,55 @@ export default function Mechanics() {
                             <li><strong>God Functions:</strong> Flags functions exceeding reasonable length (&gt;100 lines) or cyclomatic complexity. These monolithic functions are hard to test, debug, and maintain.</li>
                             <li><strong>Circular Dependencies:</strong> Analyzes the import graph to find loops that cause runtime crashes and make refactoring nearly impossible.</li>
                             <li><strong>Unused Exports:</strong> Detects dead code that's exported but never imported anywhere, cluttering your codebase.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                {/* OBSERVABILITY */}
+                <section className="space-y-4">
+                    <h2 className="text-2xl font-bold text-[#FAFAFA] flex items-center gap-3">
+                        <span className="text-3xl">👁️</span> Observability Checks
+                    </h2>
+                    <div className="pl-4 border-l border-[#262626] space-y-4">
+                        <p className="text-[#A3A3A3] leading-relaxed">
+                            Vibe-coded apps often lack proper error tracking, making debugging production issues nearly impossible.
+                        </p>
+                        <ul className="list-disc list-inside text-[#A3A3A3] space-y-2">
+                            <li><strong>Unlogged Errors:</strong> Detects catch/except blocks that silently swallow errors without logging. Checks for console.log, logger.*, Sentry, LogRocket, and other error tracking services.</li>
+                            <li><strong>Missing Error Tracking:</strong> Flags projects with no error tracking imports, suggesting services like Sentry or Bugsnag for production apps.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                {/* COST DETECTION */}
+                <section className="space-y-4">
+                    <h2 className="text-2xl font-bold text-[#FAFAFA] flex items-center gap-3">
+                        <span className="text-3xl">💸</span> Cost Detection
+                    </h2>
+                    <div className="pl-4 border-l border-[#262626] space-y-4">
+                        <p className="text-[#A3A3A3] leading-relaxed">
+                            Expensive API calls can rack up costs quickly. We detect patterns that lead to unexpected bills.
+                        </p>
+                        <ul className="list-disc list-inside text-[#A3A3A3] space-y-2">
+                            <li><strong>Expensive APIs in Loops:</strong> Flags OpenAI, Anthropic, Cloudinary, FFmpeg calls inside loops without rate limiting (p-limit, Bottleneck, sleep).</li>
+                            <li><strong>Missing Caching:</strong> Detects costly operations (LLM calls, image processing) without cache checks (Redis, Map, lru-cache, memoize).</li>
+                            <li><strong>Supported APIs:</strong> OpenAI, Anthropic, Cohere, Replicate, Cloudinary, Sharp, FFmpeg, CloudConvert.</li>
+                        </ul>
+                    </div>
+                </section>
+
+                {/* ENVIRONMENT SAFETY */}
+                <section className="space-y-4">
+                    <h2 className="text-2xl font-bold text-[#FAFAFA] flex items-center gap-3">
+                        <span className="text-3xl">🛡️</span> Environment Safety
+                    </h2>
+                    <div className="pl-4 border-l border-[#262626] space-y-4">
+                        <p className="text-[#A3A3A3] leading-relaxed">
+                            Prevents catastrophic mistakes by ensuring destructive operations are properly guarded.
+                        </p>
+                        <ul className="list-disc list-inside text-[#A3A3A3] space-y-2">
+                            <li><strong>Missing Environment Checks:</strong> Detects destructive operations (deleteMany, drop, truncate, DROP TABLE) without environment guards like `if (process.env.NODE_ENV !== 'production')`.</li>
+                            <li><strong>Hardcoded Production URLs:</strong> Flags hardcoded URLs (api.*.com, *.herokuapp.com, *.vercel.app) that should use environment variables.</li>
                         </ul>
                     </div>
                 </section>
