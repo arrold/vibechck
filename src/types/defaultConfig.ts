@@ -7,6 +7,7 @@ export const DEFAULT_CONFIG: VibechckConfig = {
     laziness: true,
     security: true,
     architecture: true,
+    cost: true,
   },
 
   hallucination: {
@@ -30,6 +31,7 @@ export const DEFAULT_CONFIG: VibechckConfig = {
     detectMockImplementations: true,
     detectPlaceholderComments: true,
     detectOverCommenting: true,
+    detectUnloggedErrors: true,
     commentDensityThreshold: 0.2,
   },
 
@@ -38,6 +40,8 @@ export const DEFAULT_CONFIG: VibechckConfig = {
     detectInsecureDeserialization: true,
     detectReact2Shell: true,
     detectInsecureJWT: true,
+    detectMissingEnvCheck: true,
+    detectHardcodedProductionURL: true,
     secretEntropyThreshold: 4.5,
   },
 

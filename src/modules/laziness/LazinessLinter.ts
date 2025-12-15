@@ -151,6 +151,16 @@ export class LazinessLinter implements AnalysisModule, VibechckPlugin {
       );
     }
 
+    // Check for unlogged errors (new observability check)
+    if (
+      config.laziness.detectUnloggedErrors &&
+      !isRuleIgnored('unlogged-error', filePath, config)
+    ) {
+      alerts.push(
+        ...this.detectUnloggedErrorsAST(rootNode, language, filePath, parserLanguage)
+      );
+    }
+
     return alerts;
   }
 
@@ -535,5 +545,145 @@ export class LazinessLinter implements AnalysisModule, VibechckPlugin {
       console.warn(`Query error in ${filePath}:`, e);
     }
     return alerts;
+  }
+
+  // ===== OBSERVABILITY CHECKS =====
+
+  private detectUnloggedErrorsAST(
+    rootNode: SyntaxNode,
+    language: SupportedLanguage,
+    filePath: string,
+    parserLanguage: any
+  ): Alert[] {
+    if (language === 'javascript' || language === 'typescript') {
+      return this.detectUnloggedErrorsJS(rootNode, parserLanguage, filePath);
+    } else if (language === 'python') {
+      return this.detectUnloggedErrorsPython(rootNode, parserLanguage, filePath);
+    }
+    return [];
+  }
+
+  private detectUnloggedErrorsJS(
+    rootNode: SyntaxNode,
+    parserLanguage: any,
+    filePath: string
+  ): Alert[] {
+    const alerts: Alert[] = [];
+
+    // Query for try-catch statements
+    const queryString = `
+      (try_statement
+        handler: (catch_clause
+          parameter: (identifier)? @param
+          body: (statement_block) @body
+        )
+      )
+    `;
+
+    try {
+      const query = new Query(parserLanguage, queryString);
+      const matches = query.matches(rootNode);
+
+      for (const match of matches) {
+        const bodyNode = match.captures.find((c) => c.name === 'body')?.node;
+        if (!bodyNode) continue;
+
+        // Check if catch block has logging
+        const hasLogging = this.hasLoggingInBlock(bodyNode);
+
+        if (!hasLogging) {
+          const startLine = bodyNode.startPosition.row + 1;
+          alerts.push({
+            id: `unlogged-error-${startLine}`,
+            severity: AlertSeverity.MEDIUM,
+            message: 'Unlogged Error: Catch block does not log the error',
+            file: filePath,
+            line: startLine,
+            module: this.name,
+            rule: 'unlogged-error',
+            suggestion:
+              'Add error logging (console.error, logger.error, or error tracking service) to catch blocks for better observability',
+          });
+        }
+      }
+    } catch (e) {
+      console.warn(`Query error in ${filePath}:`, e);
+    }
+
+    return alerts;
+  }
+
+  private detectUnloggedErrorsPython(
+    rootNode: SyntaxNode,
+    parserLanguage: any,
+    filePath: string
+  ): Alert[] {
+    const alerts: Alert[] = [];
+
+    // Query for try-except statements
+    const queryString = `
+      (try_statement
+        (except_clause
+          (block) @body
+        )
+      )
+    `;
+
+    try {
+      const query = new Query(parserLanguage, queryString);
+      const matches = query.matches(rootNode);
+
+      for (const match of matches) {
+        const bodyNode = match.captures.find((c) => c.name === 'body')?.node;
+        if (!bodyNode) continue;
+
+        // Check if except block has logging
+        const hasLogging = this.hasLoggingInBlock(bodyNode);
+
+        if (!hasLogging) {
+          const startLine = bodyNode.startPosition.row + 1;
+          alerts.push({
+            id: `unlogged-error-${startLine}`,
+            severity: AlertSeverity.MEDIUM,
+            message: 'Unlogged Error: Except block does not log the error',
+            file: filePath,
+            line: startLine,
+            module: this.name,
+            rule: 'unlogged-error',
+            suggestion:
+              'Add error logging (logging.error, print, or error tracking) to except blocks for better observability',
+          });
+        }
+      }
+    } catch (e) {
+      console.warn(`Query error in ${filePath}:`, e);
+    }
+
+    return alerts;
+  }
+
+  private hasLoggingInBlock(blockNode: SyntaxNode): boolean {
+    const blockText = blockNode.text.toLowerCase();
+
+    // Check for common logging patterns
+    const loggingPatterns = [
+      'console.log',
+      'console.error',
+      'console.warn',
+      'logger.',
+      'log.',
+      'logging.',
+      'sentry.',
+      'logrocket.',
+      'bugsnag.',
+      'rollbar.',
+      'print(',  // Python
+      '.error(',
+      '.warn(',
+      '.info(',
+      '.debug(',
+    ];
+
+    return loggingPatterns.some((pattern) => blockText.includes(pattern));
   }
 }

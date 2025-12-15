@@ -48,6 +48,7 @@ export interface VibechckConfig {
     laziness: boolean;
     security: boolean;
     architecture: boolean;
+    cost: boolean;
   };
 
   // Hallucination Sentinel settings
@@ -66,6 +67,7 @@ export interface VibechckConfig {
     detectMockImplementations: boolean;
     detectPlaceholderComments: boolean;
     detectOverCommenting: boolean;
+    detectUnloggedErrors: boolean;
     commentDensityThreshold: number;
   };
 
@@ -75,6 +77,8 @@ export interface VibechckConfig {
     detectInsecureDeserialization: boolean;
     detectReact2Shell: boolean;
     detectInsecureJWT: boolean;
+    detectMissingEnvCheck: boolean;
+    detectHardcodedProductionURL: boolean;
     secretEntropyThreshold: number;
   };
 

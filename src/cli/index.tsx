@@ -102,6 +102,7 @@ program
           laziness: enabledModules.has('laziness'),
           security: enabledModules.has('security'),
           architecture: enabledModules.has('architecture'),
+          cost: enabledModules.has('cost'),
         };
       }
 

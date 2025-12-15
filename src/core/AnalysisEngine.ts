@@ -6,6 +6,7 @@ import { HallucinationSentinel } from '../modules/hallucination/HallucinationSen
 import { LazinessLinter } from '../modules/laziness/LazinessLinter.js';
 import { SecuritySentinel } from '../modules/security/SecuritySentinel.js';
 import { ArchitectureScanner } from '../modules/architecture/ArchitectureScanner.js';
+import { CostSentinel } from '../modules/cost/CostSentinel.js';
 
 export class AnalysisEngine {
   private configLoader: ConfigLoader;
@@ -25,9 +26,10 @@ export class AnalysisEngine {
     this.pluginManager.register(new LazinessLinter());
     this.pluginManager.register(new SecuritySentinel());
     this.pluginManager.register(new ArchitectureScanner());
+    this.pluginManager.register(new CostSentinel());
   }
 
-  async initialize(): Promise<void> {}
+  async initialize(): Promise<void> { }
 
   async analyze(directory: string, config?: VibechckConfig): Promise<Report> {
     const activeConfig = config || (await this.configLoader.load());

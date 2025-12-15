@@ -116,6 +116,16 @@ export class SecuritySentinel implements AnalysisModule, VibechckPlugin {
       alerts.push(...jwtAlerts);
     }
 
+    // Check for destructive operations without env checks
+    if (config.security.detectMissingEnvCheck) {
+      alerts.push(...this.detectMissingEnvCheck(content, fileInfo.path, config));
+    }
+
+    // Check for hardcoded production URLs
+    if (config.security.detectHardcodedProductionURL) {
+      alerts.push(...this.detectHardcodedProductionURL(content, fileInfo.path, config));
+    }
+
     return alerts;
   }
 
@@ -478,6 +488,127 @@ export class SecuritySentinel implements AnalysisModule, VibechckPlugin {
           rule: 'insecure-jwt-none',
           suggestion: 'Never use the "none" algorithm. Use HS256 or RS256.',
         });
+      }
+    }
+
+    return alerts;
+  }
+
+  // ===== ENVIRONMENT SAFETY CHECKS =====
+
+  private detectMissingEnvCheck(
+    content: string,
+    filePath: string,
+    config: VibechckConfig
+  ): Alert[] {
+    if (isRuleIgnored('missing-env-check', filePath, config)) return [];
+
+    const alerts: Alert[] = [];
+    const lines = content.split('\n');
+
+    // Destructive operations that should have env checks
+    const destructivePatterns = [
+      { pattern: /\.deleteMany\s*\(/, operation: 'deleteMany' },
+      { pattern: /\.drop\s*\(/, operation: 'drop' },
+      { pattern: /\.truncate\s*\(/, operation: 'truncate' },
+      { pattern: /\.destroy\s*\(\s*\{.*force:\s*true/i, operation: 'destroy with force' },
+      { pattern: /DROP\s+TABLE/i, operation: 'DROP TABLE' },
+      { pattern: /TRUNCATE\s+TABLE/i, operation: 'TRUNCATE TABLE' },
+      { pattern: /DELETE\s+FROM.*WHERE\s+1\s*=\s*1/i, operation: 'DELETE FROM ... WHERE 1=1' },
+    ];
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+
+      for (const { pattern, operation } of destructivePatterns) {
+        if (pattern.test(line)) {
+          // Check if there's an env check nearby (within 10 lines before)
+          const hasEnvCheck = this.hasEnvCheckNearby(lines, i, 10);
+
+          if (!hasEnvCheck) {
+            alerts.push({
+              id: `missing-env-check-${i}`,
+              severity: AlertSeverity.MEDIUM,
+              message: `Missing Environment Check: Destructive operation (${operation}) without environment guard`,
+              file: filePath,
+              line: i + 1,
+              module: this.name,
+              rule: 'missing-env-check',
+              suggestion: `Wrap destructive operations in environment checks (e.g., if (process.env.NODE_ENV !== 'production') { ... })`,
+            });
+          }
+          break;
+        }
+      }
+    }
+
+    return alerts;
+  }
+
+  private hasEnvCheckNearby(lines: string[], currentLine: number, lookback: number): boolean {
+    const startLine = Math.max(0, currentLine - lookback);
+    const contextLines = lines.slice(startLine, currentLine + 1).join('\n');
+
+    const envCheckPatterns = [
+      /process\.env\.NODE_ENV/,
+      /NODE_ENV\s*[!=]=\s*['"]production['"]/,
+      /if\s*\(\s*!?production/i,
+      /process\.env\./,
+      /import\.meta\.env/,
+    ];
+
+    return envCheckPatterns.some((pattern) => pattern.test(contextLines));
+  }
+
+  private detectHardcodedProductionURL(
+    content: string,
+    filePath: string,
+    config: VibechckConfig
+  ): Alert[] {
+    if (isRuleIgnored('hardcoded-production-url', filePath, config)) return [];
+
+    const alerts: Alert[] = [];
+    const lines = content.split('\n');
+
+    // Patterns for production-like URLs
+    const productionURLPatterns = [
+      /https?:\/\/api\.[a-z0-9-]+\.com/i,
+      /https?:\/\/[a-z0-9-]+\.herokuapp\.com/i,
+      /https?:\/\/[a-z0-9-]+\.vercel\.app/i,
+      /https?:\/\/[a-z0-9-]+\.netlify\.app/i,
+      /https?:\/\/[a-z0-9-]+\.railway\.app/i,
+      /https?:\/\/prod\./i,
+      /https?:\/\/production\./i,
+    ];
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+
+      // Skip comments
+      if (line.trim().startsWith('//') || line.trim().startsWith('#')) continue;
+
+      for (const pattern of productionURLPatterns) {
+        if (pattern.test(line)) {
+          // Check if it's in an env var assignment or config
+          const isEnvVar = /process\.env|import\.meta\.env|process\.env|\.env/i.test(line);
+
+          if (!isEnvVar) {
+            const match = line.match(pattern);
+            if (match) {
+              alerts.push({
+                id: `hardcoded-production-url-${i}`,
+                severity: AlertSeverity.HIGH,
+                message: `Hardcoded Production URL: ${match[0]} should use environment variable`,
+                file: filePath,
+                line: i + 1,
+                module: this.name,
+                rule: 'hardcoded-production-url',
+                suggestion: `Replace hardcoded URL with environment variable (e.g., process.env.API_URL)`,
+              });
+            }
+          }
+          break;
+        }
       }
     }
 
