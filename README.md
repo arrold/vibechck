@@ -79,51 +79,42 @@ Use `husky` to prevent committing "lazy" code.
 npx husky add .husky/pre-commit "npx vibechck --module=laziness"
 ```
 
-## 🌍 making it available to others
-
-To share Vibechck with your team or the world:
-
-1.  **Publish to npm**:
-    ```bash
-    npm login
-    npm publish --access public
-    ```
-    Users can then run `npx vibechck` immediately without installation.
-
-2.  **Docker Image**:
-    Build a Docker image to run Vibechck in any environment:
-    ```bash
-    docker build -t myorg/vibechck .
-    docker run -v $(pwd):/app myorg/vibechck
-    ```
-
 ## 📝 Configuration
 
-Create a `.vibechck.json` file in your project root to customize rules:
+Create a `.vibechck.yaml` file in your project root to customize rules:
 
-```json
-{
-  "severity": ["critical", "high", "medium"],
-  "modules": {
-    "hallucination": true,
-    "laziness": true
-  },
-  "laziness": {
-    "detectAIPreambles": true,
-    "patterns": ["// ... existing code ..."]
-  },
-  "ignoreRules": {
-    "magic-number": ["tests/**/*.ts", "examples/magic.ts"],
-    "unused-export": ["src/api/public/**"]
-  }
-}
+```yaml
+severity:
+  - critical
+  - high
+  - medium
+
+modules:
+  hallucination: true
+  laziness: true
+  security: true
+  architecture: true
+  cost: true
+
+laziness:
+  detectAIPreambles: true
+  detectUnloggedErrors: true
+  patterns:
+    - "// ... existing code ..."
+
+ignoreRules:
+  magic-number:
+    - "tests/**/*.ts"
+    - "examples/magic.ts"
+  unused-export:
+    - "src/api/public/**"
 ```
 
 ### Ignore Rules
 Vibechck supports granular ignores using **glob patterns** (via `minimatch`). You can ignore specific rules for specific files or directories:
 
-- **`**`**: Matches any validation of characters (recursive).
-- **`*`**: Matches any validation of characters (single level).
+- **`**`**: Matches any sequence of characters (recursive).
+- **`*`**: Matches any sequence of characters (single level).
 - **Relativity**: Patterns are matched relative to the project root.
 
 ### Default Ignores
@@ -132,8 +123,6 @@ To prevent recursion crashes and save time, Vibechck **automatically ignores** t
 - `.git`
 - `.venv`
 - `dist`, `build`, `.next`, `.nuxt`, `.output`, `target`, `vendor`
-
-```
 
 ## 📄 License
 AGPL-3.0-or-later
