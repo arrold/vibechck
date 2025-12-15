@@ -163,7 +163,7 @@ export default function Landing() {
             <Section className="border-b border-[#262626]">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
                     <div>
-                        <h3 className="text-[#FF3D00] font-mono uppercase tracking-widest mb-6 text-sm">The Problem</h3>
+                        <h2 className="text-[#FF3D00] font-mono uppercase tracking-widest mb-6 text-sm">The Problem</h2>
                         <DisplayText size="md" className="mb-8">
                             AI writes code designed to pass tests, not to survive production.
                         </DisplayText>
@@ -259,7 +259,7 @@ export default function Landing() {
                                         {item.step}
                                     </span>
                                     <div>
-                                        <h4 className="text-xl font-bold text-[#FAFAFA] mb-2">{item.title}</h4>
+                                        <h3 className="text-xl font-bold text-[#FAFAFA] mb-2">{item.title}</h3>
                                         <p className="text-[#737373] max-w-xs">{item.desc}</p>
                                     </div>
                                 </div>
