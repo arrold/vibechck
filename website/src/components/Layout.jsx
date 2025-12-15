@@ -24,9 +24,11 @@ export const Navbar = () => {
                     <Link to="/docs" className={`text-sm uppercase tracking-widest transition-colors ${isDocs ? 'text-[#FAFAFA]' : 'text-[#737373] hover:text-[#FAFAFA]'}`}>
                         Docs
                     </Link>
-                    <Button variant="outline" className="!py-2 !px-4 text-xs" onClick={() => window.location.href = '/docs'}>
-                        Install CLI
-                    </Button>
+                    <Link to="/docs">
+                        <Button variant="outline" className="!py-2 !px-4 text-xs">
+                            Install CLI
+                        </Button>
+                    </Link>
                 </div>
 
                 <button onClick={() => setIsOpen(!isOpen)} className="md:hidden text-[#FAFAFA]">
@@ -70,7 +72,7 @@ export const Footer = () => (
                     <span className="text-xl font-bold tracking-tighter text-[#FAFAFA]">vibechck</span>
                 </div>
                 <p className="text-[#737373] max-w-sm">
-                    Static analysis for the generative age. Built by engineers who are tired of reviewing hallucinated code.
+                    Static analysis for the generative age. Stop reviewing hallucinated code.
                 </p>
             </div>
 
@@ -92,7 +94,6 @@ export const Footer = () => (
         </div>
         <div className="max-w-[1400px] mx-auto mt-20 pt-8 border-t border-[#262626] flex justify-between text-[#333] text-sm">
             <p>© 2024 vibechck. All rights reserved.</p>
-            <p>Designed with Bold Typography System.</p>
         </div>
     </footer>
 );

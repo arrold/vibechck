@@ -12,8 +12,9 @@ import {
     CheckCircle2
 } from 'lucide-react';
 import { Navbar, Footer } from '../components/Layout';
-import { Button, Section, DisplayText, Badge } from '../components/UI';
+import { Button, Section, DisplayText, Badge, CodeBlock } from '../components/UI';
 
+// --- ANIMATION VARIANTS ---
 // --- ANIMATION VARIANTS ---
 const fadeUp = {
     hidden: { opacity: 0, y: 20 },
@@ -35,43 +36,17 @@ const staggerContainer = {
     }
 };
 
-// --- COMPONENTS ---
-const CodeBlock = ({ code, fileName, errorLine }) => (
-    <div className="font-mono text-sm bg-[#0F0F0F] border border-[#262626] p-4 w-full overflow-hidden">
-        <div className="flex items-center justify-between mb-4 border-b border-[#262626] pb-2">
-            <span className="text-[#737373] text-xs uppercase tracking-wider">{fileName}</span>
-            <div className="flex gap-2">
-                <div className="w-2 h-2 rounded-full bg-[#262626]" />
-                <div className="w-2 h-2 rounded-full bg-[#262626]" />
-            </div>
-        </div>
-        <div className="space-y-1 overflow-x-auto">
-            {code.map((line, i) => (
-                <div key={i} className={`flex ${i === errorLine ? 'bg-[#FF3D00]/10 -mx-4 px-4 border-l-2 border-[#FF3D00]' : ''}`}>
-                    <span className="text-[#333] select-none w-8 text-right mr-4">{i + 1}</span>
-                    <span className={`${i === errorLine ? 'text-[#FF3D00]' : 'text-[#A3A3A3]'}`}>
-                        {line}
-                    </span>
-                    {i === errorLine && (
-                        <span className="ml-4 text-[#FF3D00] text-xs flex items-center gap-1">
-                            <AlertTriangle size={12} /> Hallucinated Import
-                        </span>
-                    )}
-                </div>
-            ))}
-        </div>
-    </div>
-);
+const FeatureCard = ({ icon: Icon, title, description }) => (
 
 const FeatureCard = ({ icon: Icon, title, description }) => (
-    <div className="group p-8 border border-[#262626] hover:border-[#FF3D00] transition-colors duration-300 bg-transparent hover:bg-[#1A1A1A]/30">
-        <Icon className="w-8 h-8 text-[#FF3D00] mb-6" strokeWidth={1.5} />
-        <h3 className="text-xl font-bold text-[#FAFAFA] mb-4 font-sans tracking-tight">{title}</h3>
-        <p className="text-[#737373] leading-relaxed group-hover:text-[#A3A3A3] transition-colors">
-            {description}
-        </p>
-    </div>
-);
+        <div className="group p-8 border border-[#262626] hover:border-[#FF3D00] transition-colors duration-300 bg-transparent hover:bg-[#1A1A1A]/30">
+            <Icon className="w-8 h-8 text-[#FF3D00] mb-6" strokeWidth={1.5} />
+            <h3 className="text-xl font-bold text-[#FAFAFA] mb-4 font-sans tracking-tight">{title}</h3>
+            <p className="text-[#737373] leading-relaxed group-hover:text-[#A3A3A3] transition-colors">
+                {description}
+            </p>
+        </div>
+    );
 
 export default function Landing() {
     const currentVersion = "v0.1.0";
@@ -120,57 +95,65 @@ export default function Landing() {
                     </motion.div>
                 </div>
 
-                {/* Right Visual - "Sleepy Coder" Representation */}
+                {/* Right Visual - Terminal Representation */}
                 <div className="lg:w-[45%] bg-[#0F0F0F] relative overflow-hidden flex items-center justify-center min-h-[50vh] lg:min-h-auto border-t lg:border-t-0 border-[#262626]">
-                    {/* Abstract "Sleepy Coder" Visual Composition */}
-                    <div className="relative w-full h-full p-12 flex flex-col items-center justify-center">
-                        {/* Background Noise/Grid */}
-                        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#333_1px,transparent_1px)] [background-size:16px_16px]" />
+                    <div className="relative w-full h-full p-8 md:p-12 flex items-center justify-center">
+                        {/* Background Noise with Scan Line Effect */}
+                        <div className="absolute inset-0 opacity-20 bg-[linear-gradient(rgba(18,18,18,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] z-0 pointer-events-none bg-[length:100%_2px,3px_100%] pointer-events-none" />
 
-                        {/* Central Monitor Element */}
                         <motion.div
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8 }}
-                            className="relative z-10 w-full max-w-md aspect-video bg-[#0A0A0A] border border-[#333] shadow-2xl flex flex-col"
+                            className="relative z-10 w-full max-w-lg bg-[#0A0A0A] border border-[#333] shadow-2xl rounded-sm overflow-hidden"
                         >
-                            <div className="h-6 border-b border-[#333] flex items-center px-3 gap-2 bg-[#111]">
-                                <div className="w-2 h-2 rounded-full bg-[#FF3D00]" />
-                                <div className="w-2 h-2 rounded-full bg-[#333]" />
+                            {/* Terminal Header */}
+                            <div className="h-8 bg-[#151515] border-b border-[#333] flex items-center px-4 gap-2">
+                                <div className="w-3 h-3 rounded-full bg-[#FF3D00]" />
+                                <div className="w-3 h-3 rounded-full bg-[#333]" />
+                                <div className="w-3 h-3 rounded-full bg-[#333]" />
+                                <div className="ml-auto text-xs text-[#555] font-mono">vibechck-cli — 80x24</div>
                             </div>
-                            <div className="flex-1 p-4 font-mono text-xs text-[#555] overflow-hidden">
-                                <div className="opacity-50">
-                     // analyzing src/utils/ai_helper.ts...<br />
-                     // warning: potential infinite recursion detected<br />
-                     // error: 'fs/promises' import hallucinated in node12 env<br />
-                                </div>
-                                <div className="mt-4 text-[#FF3D00] animate-pulse whitespace-pre font-bold leading-tight">
-                                    {"╔═══════════════════════════════════════╗\n║ VibeCheck Score: 62/100               ║\n╚═══════════════════════════════════════╝"}
-                                </div>
-                            </div>
-                        </motion.div>
 
-                        {/* The "Coder" Element (Stylized) */}
-                        <motion.div
-                            initial={{ y: 50, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            transition={{ delay: 0.3, duration: 0.8 }}
-                            className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-12"
-                        >
-                            <div className="relative">
-                                {/* Coffee Cup */}
-                                <Coffee size={120} strokeWidth={0.5} className="text-[#333] absolute -right-24 bottom-24 -rotate-12" />
+                            {/* Terminal Content */}
+                            <div className="p-6 font-mono text-sm leading-relaxed min-h-[300px] text-[#A3A3A3]">
+                                <div>
+                                    <span className="text-[#555]">$</span> <span className="text-[#FAFAFA]">npx vibechck .</span>
+                                </div>
+                                <div className="text-[#555] mt-2 mb-4">
+                                    Scanning 128 files...
+                                </div>
 
-                                {/* Silhouette Head/Shoulders */}
-                                <div className="w-64 h-48 bg-[#1A1A1A] rounded-t-full border-t border-x border-[#333] relative overflow-hidden">
-                                    <div className="absolute inset-0 flex items-center justify-center">
-                                        {/* Sleepy Zzzs */}
-                                        <motion.div
-                                            animate={{ y: -20, opacity: [0, 1, 0], x: 10 }}
-                                            transition={{ repeat: Infinity, duration: 2 }}
-                                            className="text-[#FF3D00] font-bold text-2xl absolute top-10 right-10"
-                                        >Z</motion.div>
+                                <div className="space-y-4">
+                                    <div className="group">
+                                        <div className="flex gap-2 text-[#737373]">
+                                            <span>src/auth/jwt.ts:42</span>
+                                            <span className="text-[#FF3D00]">[Hallucination]</span>
+                                        </div>
+                                        <div className="text-[#FAFAFA] pl-4 border-l border-[#333] mt-1">
+                                            Import `jsonwebtoken-fast` does not exist.
+                                        </div>
                                     </div>
+
+                                    <div className="group">
+                                        <div className="flex gap-2 text-[#737373]">
+                                            <span>src/core/utils.ts:15</span>
+                                            <span className="text-[#FF3D00]">[Laziness]</span>
+                                        </div>
+                                        <div className="text-[#FAFAFA] pl-4 border-l border-[#333] mt-1">
+                                            Empty catch block swallows errors.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div className="my-6 text-[#FF3D00] whitespace-pre font-bold leading-none animate-pulse">
+                                    {`╔══════════════════════════════╗
+║ VibeCheck Score: 62/100      ║
+╚══════════════════════════════╝`}
+                                </div>
+
+                                <div>
+                                    <span className="text-[#555]">$</span> <span className="w-2 h-4 inline-block bg-[#FF3D00] align-middle animate-pulse ml-1" />
                                 </div>
                             </div>
                         </motion.div>

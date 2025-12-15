@@ -60,3 +60,30 @@ export const Badge = ({ children }) => (
         {children}
     </span>
 );
+
+export const CodeBlock = ({ code, fileName, errorLine }) => (
+    <div className="font-mono text-sm bg-[#0F0F0F] border border-[#262626] p-4 w-full overflow-hidden">
+        <div className="flex items-center justify-between mb-4 border-b border-[#262626] pb-2">
+            <span className="text-[#737373] text-xs uppercase tracking-wider">{fileName}</span>
+            <div className="flex gap-2">
+                <div className="w-2 h-2 rounded-full bg-[#262626]" />
+                <div className="w-2 h-2 rounded-full bg-[#262626]" />
+            </div>
+        </div>
+        <div className="space-y-1 overflow-x-auto">
+            {code.map((line, i) => (
+                <div key={i} className={`flex ${i === errorLine ? 'bg-[#FF3D00]/10 -mx-4 px-4 border-l-2 border-[#FF3D00]' : ''}`}>
+                    <span className="text-[#333] select-none w-8 text-right mr-4">{i + 1}</span>
+                    <span className={`${i === errorLine ? 'text-[#FF3D00]' : 'text-[#A3A3A3]'} whitespace-pre`}>
+                        {line}
+                    </span>
+                    {i === errorLine && (
+                        <span className="ml-4 text-[#FF3D00] text-xs flex items-center gap-1">
+                            <span className="uppercase font-bold tracking-wider">Error</span> Hallucinated Import
+                        </span>
+                    )}
+                </div>
+            ))}
+        </div>
+    </div>
+);
