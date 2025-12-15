@@ -481,7 +481,7 @@ export default function VibechckLanding() {
             <Button variant="primary" className="text-xl px-12 py-6 border border-[#FF3D00]" onClick={() => window.location.href = 'https://www.npmjs.com/package/vibechck'}>
               View on NPM
             </Button>
-            <Button variant="ghost" className="text-xl px-12 py-6" onClick={() => window.location.href = 'https://github.com/kutekai/vibechck'}>
+            <Button variant="ghost" className="text-xl px-12 py-6" onClick={() => window.location.href = 'https://github.com/arrold/vibechck'}>
               View on GitHub
             </Button>
           </div>
@@ -513,7 +513,7 @@ export default function VibechckLanding() {
           <div>
             <h4 className="font-bold text-[#FAFAFA] mb-6 uppercase tracking-widest text-sm">Social</h4>
             <ul className="space-y-4 text-[#737373]">
-              <li><a href="https://github.com/kutekai/vibechck" className="hover:text-[#FF3D00] transition-colors flex items-center gap-2"><Github size={16} /> GitHub</a></li>
+              <li><a href="https://github.com/arrold/vibechck" className="hover:text-[#FF3D00] transition-colors flex items-center gap-2"><Github size={16} /> GitHub</a></li>
             </ul>
           </div>
         </div>
