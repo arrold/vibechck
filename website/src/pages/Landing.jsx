@@ -37,16 +37,14 @@ const staggerContainer = {
 };
 
 const FeatureCard = ({ icon: Icon, title, description }) => (
-
-const FeatureCard = ({ icon: Icon, title, description }) => (
-        <div className="group p-8 border border-[#262626] hover:border-[#FF3D00] transition-colors duration-300 bg-transparent hover:bg-[#1A1A1A]/30">
-            <Icon className="w-8 h-8 text-[#FF3D00] mb-6" strokeWidth={1.5} />
-            <h3 className="text-xl font-bold text-[#FAFAFA] mb-4 font-sans tracking-tight">{title}</h3>
-            <p className="text-[#737373] leading-relaxed group-hover:text-[#A3A3A3] transition-colors">
-                {description}
-            </p>
-        </div>
-    );
+    <div className="group p-8 border border-[#262626] hover:border-[#FF3D00] transition-colors duration-300 bg-transparent hover:bg-[#1A1A1A]/30">
+        <Icon className="w-8 h-8 text-[#FF3D00] mb-6" strokeWidth={1.5} />
+        <h3 className="text-xl font-bold text-[#FAFAFA] mb-4 font-sans tracking-tight">{title}</h3>
+        <p className="text-[#737373] leading-relaxed group-hover:text-[#A3A3A3] transition-colors">
+            {description}
+        </p>
+    </div>
+);
 
 export default function Landing() {
     const currentVersion = "v0.1.0";
