@@ -279,8 +279,8 @@ export default function VibechckLanding() {
                      // warning: potential infinite recursion detected<br />
                      // error: 'fs/promises' import hallucinated in node12 env<br />
                 </div>
-                <div className="mt-4 text-[#FF3D00] animate-pulse">
-                  &gt; VIBE CHECK FAILED
+                <div className="mt-4 text-[#FF3D00] animate-pulse whitespace-pre font-bold leading-tight">
+                  {"╔═══════════════════════════════════════╗\n║ VibeCheck Score: 62/100               ║\n╚═══════════════════════════════════════╝"}
                 </div>
               </div>
             </motion.div>
