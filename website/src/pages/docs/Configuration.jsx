@@ -14,7 +14,7 @@ export default function Configuration() {
 
 
             <section className="space-y-6">
-                <h2 className="text-3xl font-bold text-[#FAFAFA] mt-12">The .vibechck.yaml File</h2>
+                <h2 className="text-3xl font-bold text-[#FAFAFA]" style={{ marginTop: '3rem' }}>The .vibechck.yaml File</h2>
                 <div className="h-[1px] w-full bg-[#262626] mb-8" />
 
                 <p className="text-[#A3A3A3] leading-relaxed">
@@ -58,7 +58,7 @@ laziness:
             </section>
 
             <section className="space-y-6">
-                <h2 className="text-3xl font-bold text-[#FAFAFA] mt-24">Rule Reference</h2>
+                <h2 className="text-3xl font-bold text-[#FAFAFA]" style={{ marginTop: '6rem' }}>Rule Reference</h2>
                 <div className="h-[1px] w-full bg-[#262626] mb-8" />
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

@@ -16,7 +16,7 @@ export default function Mechanics() {
             <div className="space-y-12">
                 {/* HALLUCINATION */}
                 <section className="space-y-4">
-                    <h2 className="text-2xl font-bold text-[#FAFAFA] flex items-center gap-3 mt-12">
+                    <h2 className="text-2xl font-bold text-[#FAFAFA] flex items-center gap-3" style={{ marginTop: '3rem' }}>
                         <span className="text-3xl">👻</span> Hallucination Detector
                     </h2>
                     <div className="pl-4 border-l border-[#262626] space-y-4">
