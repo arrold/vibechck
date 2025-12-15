@@ -13,8 +13,8 @@ export default function Installation() {
             </div>
 
             {/* INSTALLATION */}
-            <section id="installation" className="space-y-6 mt-20">
-                <h2 className="text-3xl font-bold text-[#FAFAFA]">Installation</h2>
+            <section id="installation" className="space-y-6">
+                <h2 className="text-3xl font-bold text-[#FAFAFA]" style={{ marginTop: '3rem' }}>Installation</h2>
                 <div className="h-[1px] w-full bg-[#262626] mb-8" />
 
                 <p className="text-[#A3A3A3] leading-relaxed">
@@ -37,8 +37,8 @@ export default function Installation() {
             </section>
 
             {/* USAGE */}
-            <section id="usage" className="space-y-6 mt-20">
-                <h2 className="text-3xl font-bold text-[#FAFAFA]">Usage</h2>
+            <section id="usage" className="space-y-6">
+                <h2 className="text-3xl font-bold text-[#FAFAFA]" style={{ marginTop: '3rem' }}>Usage</h2>
                 <div className="h-[1px] w-full bg-[#262626] mb-8" />
 
                 <p className="text-[#A3A3A3] leading-relaxed">
@@ -64,8 +64,8 @@ export default function Installation() {
             </section>
 
             {/* PRE-COMMIT */}
-            <section id="pre-commit" className="space-y-6 mt-20">
-                <h2 className="text-3xl font-bold text-[#FAFAFA]">Pre-commit Hooks</h2>
+            <section id="pre-commit" className="space-y-6">
+                <h2 className="text-3xl font-bold text-[#FAFAFA]" style={{ marginTop: '3rem' }}>Pre-commit Hooks</h2>
                 <div className="h-[1px] w-full bg-[#262626] mb-8" />
 
                 <p className="text-[#A3A3A3] leading-relaxed">
@@ -90,8 +90,8 @@ export default function Installation() {
             </section>
 
             {/* CI/CD */}
-            <section id="cicd" className="space-y-6 mt-20">
-                <h2 className="text-3xl font-bold text-[#FAFAFA]">CI/CD Integration</h2>
+            <section id="cicd" className="space-y-6">
+                <h2 className="text-3xl font-bold text-[#FAFAFA]" style={{ marginTop: '3rem' }}>CI/CD Integration</h2>
                 <div className="h-[1px] w-full bg-[#262626] mb-8" />
 
                 <p className="text-[#A3A3A3] leading-relaxed mb-6">
