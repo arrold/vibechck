@@ -56,7 +56,7 @@ laziness:
                 </div>
             </section>
 
-            <section className="space-y-6 mt-12">
+            <section className="space-y-6 mt-16">
                 <h2 className="text-3xl font-bold text-[#FAFAFA]">Rule Reference</h2>
                 <div className="h-[1px] w-full bg-[#262626] mb-8" />
 

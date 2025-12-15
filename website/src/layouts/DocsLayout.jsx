@@ -44,7 +44,7 @@ export const DocsLayout = () => {
                         <div>
                             <h4 className="font-bold text-[#FAFAFA] mb-4 uppercase tracking-widest text-xs">Getting Started</h4>
                             <div className="space-y-1">
-                                <SidebarLink to="/docs/installation">Installation & Usage</SidebarLink>
+                                <SidebarLink to="/docs/installation">Installation & Integration</SidebarLink>
                             </div>
                         </div>
 
