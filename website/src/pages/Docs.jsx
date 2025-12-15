@@ -93,31 +93,30 @@ jobs:
       - name: Run Vibechck
         run: npx vibechck --severity=critical,high`}
                             </pre>
-                        </pre>
-                </div>
+                        </div>
 
-                <h3 className="text-xl font-bold text-[#FAFAFA] mb-4 mt-8">Pre-commit (Husky)</h3>
-                <p className="text-[#A3A3A3] leading-relaxed mb-4">
-                    The best way to use vibechck is to catch issues <em>before</em> they leave your machine.
-                </p>
-                <div className="bg-[#111] border border-[#262626] p-6 text-sm font-mono">
-                    <span className="text-[#737373]"># Add to your husky config</span><br />
-                    <span className="text-[#FAFAFA]">npx husky add .husky/pre-commit "npx vibechck --module=hallucination,security"</span>
-                </div>
-            </section>
+                        <h3 className="text-xl font-bold text-[#FAFAFA] mb-4 mt-8">Pre-commit (Husky)</h3>
+                        <p className="text-[#A3A3A3] leading-relaxed mb-4">
+                            The best way to use vibechck is to catch issues <em>before</em> they leave your machine.
+                        </p>
+                        <div className="bg-[#111] border border-[#262626] p-6 text-sm font-mono">
+                            <span className="text-[#737373]"># Add to your husky config</span><br />
+                            <span className="text-[#FAFAFA]">npx husky add .husky/pre-commit "npx vibechck --module=hallucination,security"</span>
+                        </div>
+                    </section>
 
-            {/* CONFIGURATION */}
-            <section id="configuration" className="space-y-6">
-                <h2 className="text-3xl font-bold text-[#FAFAFA]">Configuration</h2>
-                <div className="h-[1px] w-full bg-[#262626] mb-8" />
+                    {/* CONFIGURATION */}
+                    <section id="configuration" className="space-y-6">
+                        <h2 className="text-3xl font-bold text-[#FAFAFA]">Configuration</h2>
+                        <div className="h-[1px] w-full bg-[#262626] mb-8" />
 
-                <p className="text-[#A3A3A3] leading-relaxed">
-                    Vibechck is zero-config by default, but you can tune it by creating a <span className="font-mono text-[#FAFAFA]">.vibechck.yaml</span> file in your project root.
-                </p>
+                        <p className="text-[#A3A3A3] leading-relaxed">
+                            Vibechck is zero-config by default, but you can tune it by creating a <span className="font-mono text-[#FAFAFA]">.vibechck.yaml</span> file in your project root.
+                        </p>
 
-                <div className="bg-[#111] border border-[#262626] p-6 overflow-x-auto text-sm font-mono">
-                    <pre className="text-[#A3A3A3]">
-                        {`# .vibechck.yaml
+                        <div className="bg-[#111] border border-[#262626] p-6 overflow-x-auto text-sm font-mono">
+                            <pre className="text-[#A3A3A3]">
+                                {`# .vibechck.yaml
 
 # Filter results by severity (defaults to all)
 severity:
@@ -145,63 +144,63 @@ ignoreRules:
 # Module-specific settings
 laziness:
   threshold: 20 # percent of comment density allowed`}
-                    </pre>
-                </div>
-            </section>
-
-            {/* DEEP DIVE: HOW IT WORKS */}
-            <section id="mechanics" className="space-y-12 pt-12">
-                <div>
-                    <Badge>Under the Hood</Badge>
-                    <DisplayText size="md">How it Works</DisplayText>
-                </div>
-
-                <div className="space-y-8">
-                    <div>
-                        <h3 className="text-xl font-bold text-[#FF3D00] mb-3">👻 Hallucination Detector</h3>
-                        <p className="text-[#A3A3A3] leading-relaxed">
-                            <strong>Methodology:</strong> Scans all import statements (`import`, `require`, `from`) and cross-references them against your `package.json`. If a package is imported but not defined locally, it queries public registries (NPM, PyPI, Crates.io) to see if the package even <em>exists</em>.
-                        </p>
-                        <div className="mt-2 text-sm text-[#737373] bg-[#1A1A1A] p-3 border border-[#262626]">
-                            <strong>Why?</strong> LLMs often hallucinate convenient package names (e.g., `react-use-auth-magic`) that don't exist, breaking usage.
+                            </pre>
                         </div>
-                    </div>
+                    </section>
 
-                    <div>
-                        <h3 className="text-xl font-bold text-[#FF3D00] mb-3">😴 Laziness Linter</h3>
-                        <p className="text-[#A3A3A3] leading-relaxed">
-                            <strong>Methodology:</strong> Uses heuristics to detect "placeholder" coding styles. It scans ASTs and comments for:
-                        </p>
-                        <ul className="list-disc list-inside mt-2 text-[#A3A3A3] space-y-1 ml-4">
-                            <li>Generic comments: `// ... rest of code`, `// TODO: implement`, `// fixme`</li>
-                            <li>Empty catch blocks: `catch (e) { }` (silently swallowing errors)</li>
-                            <li>Comment Density: Files that are >20% comments (or >40% for tests) usually indicate LLM "yapping" explaining code that isn't there.</li>
-                        </ul>
-                    </div>
+                    {/* DEEP DIVE: HOW IT WORKS */}
+                    <section id="mechanics" className="space-y-12 pt-12">
+                        <div>
+                            <Badge>Under the Hood</Badge>
+                            <DisplayText size="md">How it Works</DisplayText>
+                        </div>
 
-                    <div>
-                        <h3 className="text-xl font-bold text-[#FF3D00] mb-3">🔒 Security Sentinel</h3>
-                        <p className="text-[#A3A3A3] leading-relaxed">
-                            <strong>Methodology:</strong> A regex-based secret scanner tuned for AI-specific leaks. It looks for High-Entropy strings assigned to variable names like `apiKey`, `secret`, `password`, and specific cloud provider tokens (AWS, Stripe, OpenAI).
-                        </p>
-                    </div>
+                        <div className="space-y-8">
+                            <div>
+                                <h3 className="text-xl font-bold text-[#FF3D00] mb-3">👻 Hallucination Detector</h3>
+                                <p className="text-[#A3A3A3] leading-relaxed">
+                                    <strong>Methodology:</strong> Scans all import statements (`import`, `require`, `from`) and cross-references them against your `package.json`. If a package is imported but not defined locally, it queries public registries (NPM, PyPI, Crates.io) to see if the package even <em>exists</em>.
+                                </p>
+                                <div className="mt-2 text-sm text-[#737373] bg-[#1A1A1A] p-3 border border-[#262626]">
+                                    <strong>Why?</strong> LLMs often hallucinate convenient package names (e.g., `react-use-auth-magic`) that don't exist, breaking usage.
+                                </div>
+                            </div>
 
-                    <div>
-                        <h3 className="text-xl font-bold text-[#FF3D00] mb-3">🏗️ Architecture Scanner</h3>
-                        <p className="text-[#A3A3A3] leading-relaxed">
-                            <strong>Methodology:</strong> Calculates complexity metrics.
-                        </p>
-                        <ul className="list-disc list-inside mt-2 text-[#A3A3A3] space-y-1 ml-4">
-                            <li><strong>God Functions:</strong> Flags functions exceeding reasonable length (e.g., >100 lines) or complexity.</li>
-                            <li><strong>Circular Dependencies:</strong> Analyzes the import graph to find loops that cause runtime crashes.</li>
-                        </ul>
-                    </div>
+                            <div>
+                                <h3 className="text-xl font-bold text-[#FF3D00] mb-3">😴 Laziness Linter</h3>
+                                <p className="text-[#A3A3A3] leading-relaxed">
+                                    <strong>Methodology:</strong> Uses heuristics to detect "placeholder" coding styles. It scans ASTs and comments for:
+                                </p>
+                                <ul className="list-disc list-inside mt-2 text-[#A3A3A3] space-y-1 ml-4">
+                                    <li>Generic comments: `// ... rest of code`, `// TODO: implement`, `// fixme`</li>
+                                    <li>Empty catch blocks: `catch (e) { }` (silently swallowing errors)</li>
+                                    <li>Comment Density: Files that are >20% comments (or >40% for tests) usually indicate LLM "yapping" explaining code that isn't there.</li>
+                                </ul>
+                            </div>
+
+                            <div>
+                                <h3 className="text-xl font-bold text-[#FF3D00] mb-3">🔒 Security Sentinel</h3>
+                                <p className="text-[#A3A3A3] leading-relaxed">
+                                    <strong>Methodology:</strong> A regex-based secret scanner tuned for AI-specific leaks. It looks for High-Entropy strings assigned to variable names like `apiKey`, `secret`, `password`, and specific cloud provider tokens (AWS, Stripe, OpenAI).
+                                </p>
+                            </div>
+
+                            <div>
+                                <h3 className="text-xl font-bold text-[#FF3D00] mb-3">🏗️ Architecture Scanner</h3>
+                                <p className="text-[#A3A3A3] leading-relaxed">
+                                    <strong>Methodology:</strong> Calculates complexity metrics.
+                                </p>
+                                <ul className="list-disc list-inside mt-2 text-[#A3A3A3] space-y-1 ml-4">
+                                    <li><strong>God Functions:</strong> Flags functions exceeding reasonable length (e.g., >100 lines) or complexity.</li>
+                                    <li><strong>Circular Dependencies:</strong> Analyzes the import graph to find loops that cause runtime crashes.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
                 </div>
-            </section>
-        </div>
             </div >
 
-        <Footer />
+            <Footer />
         </div >
     );
 }
