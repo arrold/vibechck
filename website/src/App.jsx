@@ -478,7 +478,7 @@ export default function VibechckLanding() {
             Stop letting LLMs merge bad code. Integrate vibechck into your workflow today.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-6">
-            <Button variant="primary" className="text-xl px-12 py-6 border border-[#FF3D00]" onClick={() => window.location.href = 'https://www.npmjs.com/package/vibechck'}>
+            <Button variant="primary" className="text-xl px-12 py-6 border border-[#FF3D00] hover:bg-[#FF3D00] hover:text-[#0A0A0A]" onClick={() => window.location.href = 'https://www.npmjs.com/package/vibechck'}>
               View on NPM
             </Button>
             <Button variant="ghost" className="text-xl px-12 py-6" onClick={() => window.location.href = 'https://github.com/arrold/vibechck'}>
