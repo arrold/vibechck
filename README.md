@@ -3,6 +3,8 @@
 > **AI Coding Assistant Criticism Scanner**
 > _Ensure your codebase passes the vibe check._
 
+[**🌐 Visit Website**](https://arrold.github.io/vibechck)
+
 vibechck is a static analysis tool designed specifically to detect anti-patterns, hallucinations, and "lazy" coding practices often introduced by Large Language Models (LLMs) and AI coding assistants.
 
 ## 🚀 Key Features
@@ -19,10 +21,8 @@ To use vibechck in your project, install it via npm:
 ```bash
 npm install --save-dev vibechck
 # OR
-npx vibechck-scanner
+npx vibechck
 ```
-
-*(Note: Package name is illustrative until published)*
 
 ## 🛠️ Usage
 
