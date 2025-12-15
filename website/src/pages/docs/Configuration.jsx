@@ -56,7 +56,7 @@ laziness:
                 </div>
             </section>
 
-            <section className="space-y-6">
+            <section className="space-y-6 mt-12">
                 <h2 className="text-3xl font-bold text-[#FAFAFA]">Rule Reference</h2>
                 <div className="h-[1px] w-full bg-[#262626] mb-8" />
 
@@ -82,7 +82,7 @@ laziness:
                     <div className="border border-[#262626] p-6">
                         <h3 className="text-[#FF3D00] font-mono font-bold mb-2">god-function</h3>
                         <p className="text-[#737373] text-sm">
-                   flags functions that are too long (>100 lines) or cyclomatic complex.
+                            flags functions that are too long (&gt;100 lines) or cyclomatic complex.
                         </p>
                     </div>
                 </div>
