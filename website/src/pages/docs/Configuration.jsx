@@ -12,7 +12,7 @@ export default function Configuration() {
                 </p>
             </div>
 
-            <section className="space-y-6 mt-8">
+            <section className="space-y-6 mt-12">
                 <h2 className="text-3xl font-bold text-[#FAFAFA]">The .vibechck.yaml File</h2>
                 <div className="h-[1px] w-full bg-[#262626] mb-8" />
 
@@ -56,7 +56,7 @@ laziness:
                 </div>
             </section>
 
-            <section className="space-y-6 mt-20">
+            <section className="space-y-6 mt-24">
                 <h2 className="text-3xl font-bold text-[#FAFAFA]">Rule Reference</h2>
                 <div className="h-[1px] w-full bg-[#262626] mb-8" />
 

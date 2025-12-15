@@ -15,7 +15,7 @@ export default function Mechanics() {
 
             <div className="space-y-12">
                 {/* HALLUCINATION */}
-                <section className="space-y-4 mt-8">
+                <section className="space-y-4 mt-12">
                     <h2 className="text-2xl font-bold text-[#FAFAFA] flex items-center gap-3">
                         <span className="text-3xl">👻</span> Hallucination Detector
                     </h2>
