@@ -1,0 +1,84 @@
+{
+  "name": "vibechck",
+  "version": "0.1.0",
+  "description": "AI Coding Assistant Criticism Scanner - Detects vibe coding anti-patterns in AI-generated code",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "vibechck": "dist/cli/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node src/cli/index.ts",
+    "test": "NODE_OPTIONS='--experimental-vm-modules' jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "format": "prettier --write src/**/*.ts",
+    "prepare": "husky",
+    "prepublishOnly": "npm run build && npm test && npm run lint",
+    "preversion": "npm run lint",
+    "version": "npm run format",
+    "postversion": "git push && git push --tags"
+  },
+  "keywords": [
+    "static-analysis",
+    "ai-code",
+    "security",
+    "code-quality",
+    "cli",
+    "typescript",
+    "vibe-coding"
+  ],
+  "author": "Vibechck Team",
+  "license": "AGPL-3.0-only",
+  "files": [
+    "dist/**/*",
+    "README.md",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "@babel/parser": "^7.23.9",
+    "@babel/traverse": "^7.23.9",
+    "axios": "^1.6.7",
+    "chalk": "^4.1.2",
+    "chevrotain": "^11.0.3",
+    "commander": "^12.0.0",
+    "glob": "^10.3.10",
+    "ink": "^6.5.1",
+    "levenshtein": "^1.0.0",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "tapable": "^2.3.0",
+    "tree-sitter": "^0.21.1",
+    "tree-sitter-javascript": "^0.21.4",
+    "tree-sitter-python": "^0.21.0",
+    "tree-sitter-typescript": "^0.21.2",
+    "typescript": "^5.3.3",
+    "yaml": "^2.3.4"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.12",
+    "@types/jscodeshift": "^17.3.0",
+    "@types/levenshtein": "^1.0.4",
+    "@types/node": "^20.11.17",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "fast-check": "^3.15.0",
+    "husky": "^9.1.7",
+    "jest": "^29.7.0",
+    "jscodeshift": "^17.3.0",
+    "prettier": "^3.2.5",
+    "ts-jest": "^29.1.2",
+    "ts-node": "^10.9.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

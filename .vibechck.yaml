@@ -1,0 +1,53 @@
+scanning:
+  exclude:
+    - examples/**
+    - tests/**
+    - dist/**
+    - node_modules/**
+    - website/**
+
+ignoreRules:
+  # Security module contains regex patterns that trigger self-detection of secrets/tokens
+  insecure-jwt:
+    - "**/src/modules/security/SecuritySentinel.ts"
+
+  # Core architecture and types use constants/enums that trigger magic number heuristics
+  # We extract what we can, but some configuration values and extensive mappings are unavoidable
+  magic-number:
+    - "**/jest.config.js"
+    - "**/src/modules/security/SecuritySentinel.ts"
+    - "**/src/cli/index.tsx"
+    - "**/src/ui/App.tsx"
+    - "**/src/modules/laziness/LazinessLinter.ts"
+    - "**/src/core/RegistryClient.ts"
+    - "**/src/core/FileScanner.ts"
+    - "**/src/modules/architecture/ArchitectureScanner.ts"
+    - "**/src/core/adapters/PythonCSTAdapter.ts"
+    - "**/src/types/**"
+    - "**/src/core/ScorecardClient.ts"
+    - "**/src/core/SarifFormatter.ts"
+
+  # Interface definitions often match external contracts (DB/API) which use snake_case
+  # We enforce camelCase for internal TS code, but allow exceptions for these layers
+  mixed-naming:
+    - "**/src/core/RegistryClient.ts"
+    - "**/src/types/index.ts"
+    - "**/src/modules/architecture/ArchitectureScanner.ts"
+    - "**/src/core/adapters/PythonCSTAdapter.ts"
+    - "**/src/core/adapters/JSCodeshiftAdapter.ts"
+
+  # Default config contains placeholder strings for demonstration or init
+  placeholder-comment:
+    - "**/src/types/defaultConfig.ts"
+
+  # ScorecardResult is used but sometimes flagged as unused due to dynamic usage patterns
+  unused-export:
+    - "**/src/core/ScorecardClient.ts"
+
+  # ArchitectureScanner contains complex analysis logic that triggers god-function heuristics
+  # due to regex matching on its own code
+  god-function:
+    - "**/src/modules/architecture/ArchitectureScanner.ts"
+    - "**/src/modules/laziness/LazinessLinter.ts"
+    - "**/src/modules/security/SecuritySentinel.ts"
+    - "**/src/core/RegistryClient.ts"

@@ -1,0 +1,37 @@
+name: 'VibeCheck Scanner'
+description: 'AI Coding Assistant Criticism Scanner - Detects vibe coding anti-patterns'
+author: 'Google DeepMind'
+inputs:
+  directory:
+    description: 'Directory to scan'
+    required: false
+    default: '.'
+  config:
+    description: 'Path to configuration file'
+    required: false
+    default: '.vibecheck.json'
+  format:
+    description: 'Output format (text, json, sarif)'
+    required: false
+    default: 'sarif'
+  output:
+    description: 'Path to save the output file'
+    required: false
+    default: 'vibecheck.sarif'
+runs:
+  using: 'composite'
+  steps:
+    - name: Install dependencies and build
+      run: |
+        cd ${{ github.action_path }}
+        npm ci
+        npm run build
+        npm link
+      shell: bash
+
+    - name: Run VibeCheck
+      run: |
+        vibecheck "${{ inputs.directory }}" \
+          --config "${{ inputs.config }}" \
+          --format "${{ inputs.format }}" > "${{ inputs.output }}"
+      shell: bash

@@ -1,0 +1,22 @@
+{
+    "scanning": {
+        "include": [
+            "**/*"
+        ],
+        "exclude": [
+            "**/node_modules/**"
+        ]
+    },
+    "architecture": {
+        "detectMagicNumbers": true,
+        "detectUnusedExports": true
+    },
+    "ignoreRules": {
+        "magic-number": [
+            "**/magic.ts"
+        ],
+        "unused-export": [
+            "**/mixed-naming-contract.ts"
+        ]
+    }
+}
