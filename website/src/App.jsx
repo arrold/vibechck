@@ -2,9 +2,9 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Landing from './pages/Landing';
 import { DocsLayout } from './layouts/DocsLayout';
-import Installation from './pages/docs/Installation';
-import Configuration from './pages/docs/Configuration';
-import Mechanics from './pages/docs/Mechanics';
+import Installation from './pages/docs/Installation.jsx';
+import Configuration from './pages/docs/Configuration.jsx';
+import Mechanics from './pages/docs/Mechanics.jsx';
 
 export default function App() {
   return (
