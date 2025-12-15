@@ -10,3 +10,4 @@ website/.next
 .venv/
 .husky/_/
 .npmrc
+vibechck_report.txt
