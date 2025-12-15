@@ -29,7 +29,7 @@ export class AnalysisEngine {
     this.pluginManager.register(new CostSentinel());
   }
 
-  async initialize(): Promise<void> { }
+  async initialize(): Promise<void> {}
 
   async analyze(directory: string, config?: VibechckConfig): Promise<Report> {
     const activeConfig = config || (await this.configLoader.load());
