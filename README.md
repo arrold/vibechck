@@ -4,7 +4,8 @@
 > _Ensure your codebase passes the vibe check._
 
 [**🌐 Visit Website**](https://vibechck.dev)
-[**GitHub**](https://github.com/arrold/vibechck)
+
+[**🌐 GitHub**](https://github.com/arrold/vibechck)
 
 vibechck is a static analysis tool designed specifically to detect anti-patterns, hallucinations, and "lazy" coding practices often introduced by Large Language Models (LLMs) and AI coding assistants.
 
