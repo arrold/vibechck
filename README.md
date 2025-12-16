@@ -3,16 +3,21 @@
 > **AI Coding Assistant Criticism Scanner**
 > _Ensure your codebase passes the vibe check._
 
-[**🌐 Visit Website**](https://arrold.github.io/vibechck)
+[**🌐 Visit Website**](https://vibechck.dev)
+[**GitHub**](https://github.com/arrold/vibechck)
 
 vibechck is a static analysis tool designed specifically to detect anti-patterns, hallucinations, and "lazy" coding practices often introduced by Large Language Models (LLMs) and AI coding assistants.
 
 ## 🚀 Key Features
 
 - **👻 Hallucination Detection**: Finds phantom dependencies, "newborn" packages (supply chain risk), and typosquatting attempts.
-- **😴 Laziness Linter**: Catches "lazy" AI patterns like `// ... rest of code`, hollow functions, and mock implementations left in production code.
-- **🔒 Security Sentinel**: Detects hardcoded secrets and dangerous deserialization patterns common in AI-generated code.
-- **🏗️ Architecture Scanner**: Identifies "God functions" and circular dependencies.
+- **😴 Laziness Linter**: Catches "lazy" AI patterns like `// ... rest of code`, hollow functions, mock implementations, and unlogged errors in catch blocks.
+- **🔒 Security Sentinel**: Detects hardcoded secrets, dangerous deserialization patterns, insecure JWT usage, and hardcoded production URLs.
+- **🏗️ Architecture Scanner**: Identifies "God functions", circular dependencies, and unused exports.
+- **👁️ Observability Checks**: Flags unlogged errors and missing error tracking services (Sentry, LogRocket, etc.).
+- **💸 Cost Detection**: Identifies expensive API calls (OpenAI, Anthropic, Cloudinary) in loops without rate limiting or caching.
+- **🛡️ Environment Safety**: Detects destructive operations without environment guards and hardcoded production URLs.
+
 
 ## 📦 Installation
 
