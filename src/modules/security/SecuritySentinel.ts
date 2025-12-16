@@ -270,7 +270,12 @@ export class SecuritySentinel implements AnalysisModule, VibechckPlugin {
 
     const alerts: Alert[] = [];
     const lines = content.split('\n');
-    const unsafePatterns = [/eval\s*\(/g, /Function\s*\(/g, /new Function\s*\(/g];
+    const unsafePatterns = [
+      /\beval\s*\(/g,
+      /\bnew\s+Function\s*\(/g, // Only match "new Function(", not just "Function"
+      /\bsetTimeout\s*\(\s*['"`]/g, // setTimeout with string argument
+      /\bsetInterval\s*\(\s*['"`]/g, // setInterval with string argument
+    ];
 
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];

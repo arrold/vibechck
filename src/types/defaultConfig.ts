@@ -32,7 +32,7 @@ export const DEFAULT_CONFIG: VibechckConfig = {
     detectPlaceholderComments: true,
     detectOverCommenting: true,
     detectUnloggedErrors: true,
-    commentDensityThreshold: 0.2,
+    commentDensityThreshold: 0.3,
   },
 
   security: {
@@ -77,6 +77,8 @@ export const DEFAULT_CONFIG: VibechckConfig = {
       '**/*.min.js',
       '**/*.d.ts',
       '**/*.map',
+      'go.mod',
+      'go.sum',
     ],
     maxFileSize: 1024 * 1024, // 1MB
     followSymlinks: false,

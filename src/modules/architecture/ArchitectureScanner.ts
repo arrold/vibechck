@@ -519,8 +519,21 @@ export class ArchitectureScanner implements AnalysisModule, VibechckPlugin {
     const alerts: Alert[] = [];
     const lines = content.split('\n');
 
-    // Safe numbers to ignore
-    const safeNumbers = new Set(['0', '1', '2', '10', '100', '-1']);
+    // Safe numbers to ignore - expanded whitelist based on real-world usage
+    const safeNumbers = new Set([
+      // Basic numbers
+      '0', '1', '2', '10', '100', '-1',
+      // HTTP status codes
+      '200', '201', '204', '301', '302', '304',
+      '400', '401', '403', '404', '405', '409', '422', '429',
+      '500', '502', '503', '504',
+      // bcrypt/argon2 cost factors
+      '8', '10', '12', '14',
+      // Time constants
+      '24', '60', '7', '30', '31', '365', '1000', '3600', '86400', '168',
+      // Common ports
+      '80', '443', '3000', '3001', '5000', '5432', '8080', '8000', '27017', '6379',
+    ]);
 
     // Regex to match numeric literals
     // Matches 123, 12.34, etc. but tries to avoid matching inside strings or property names
