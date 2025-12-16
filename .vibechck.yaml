@@ -10,6 +10,11 @@ ignoreRules:
   # Security module contains regex patterns that trigger self-detection of secrets/tokens
   insecure-jwt:
     - "**/src/modules/security/SecuritySentinel.ts"
+  
+  # SecuritySentinel contains regex patterns in comments that match insecure deserialization detection
+  insecure-deserialization:
+    - "**/src/modules/security/SecuritySentinel.ts"
+
 
   # Core architecture and types use constants/enums that trigger magic number heuristics
   # We extract what we can, but some configuration values and extensive mappings are unavoidable
