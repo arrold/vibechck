@@ -1,6 +1,6 @@
 {
   "name": "vibechck",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "AI Coding Assistant Criticism Scanner - Detects vibe coding anti-patterns in AI-generated code",
   "type": "module",
   "main": "dist/index.js",
