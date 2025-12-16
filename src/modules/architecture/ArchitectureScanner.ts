@@ -461,9 +461,20 @@ export class ArchitectureScanner implements AnalysisModule, VibechckPlugin {
       // Extract identifiers
       const identifiers = line.match(/\b[a-zA-Z_][a-zA-Z0-9_]*\b/g) || [];
       const camelCase = identifiers.filter((id) => /^[a-z][a-zA-Z0-9]*[A-Z][a-zA-Z0-9]*$/.test(id));
+      // Only flag lowercase snake_case, not UPPER_SNAKE_CASE constants
       const snakeCase = identifiers.filter((id) => /^[a-z][a-z0-9]*_[a-z0-9_]+$/.test(id));
+      // Filter out common patterns that aren't actually snake_case variables
+      const actualSnakeCase = snakeCase.filter(id => {
+        // Exclude if it's a property access or method call pattern
+        const lineContext = line.substring(Math.max(0, line.indexOf(id) - 5), line.indexOf(id) + id.length + 5);
+        // Skip if it looks like it's part of an object/API (e.g., api.some_method, obj.some_prop)
+        if (lineContext.includes('.') && !lineContext.match(new RegExp(`\\b${id}\\s*=`))) {
+          return false; // Likely an external API/contract
+        }
+        return true;
+      });
 
-      if (camelCase.length > 0 && snakeCase.length > 0) {
+      if (camelCase.length > 0 && actualSnakeCase.length > 0) {
         alerts.push({
           id: `mixed-naming-${Date.now()}-${i}`,
           severity: AlertSeverity.MEDIUM,

@@ -682,6 +682,16 @@ export class LazinessLinter implements AnalysisModule, VibechckPlugin {
       '.warn(',
       '.info(',
       '.debug(',
+      // Toast/notification libraries (user-facing error handling)
+      'toast.error',
+      'toast.warning',
+      'toast(',
+      'notify(',
+      'notification.',
+      'alert(',
+      'snackbar.',
+      'message.error',
+      'message.warning',
     ];
 
     return loggingPatterns.some((pattern) => blockText.includes(pattern));
