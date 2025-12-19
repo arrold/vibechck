@@ -19,23 +19,37 @@ Since `vibechck` is achieving its first public release, starting with **0.1.0** 
 
 ## 3. Publishing Steps
 
-1.  **Bump Version**:
-    Update the version number in `package.json` and create a git tag automatically.
+The release process is automated via `package.json` scripts, but requires a clean git state to start.
+
+1.  **Ensure Git is Clean**:
+    You **MUST** commit or stash all local changes before releasing. `npm version` will fail if the working directory is not clean.
     ```bash
-    # For a minor release (0.1.0)
-    npm version minor
-    
-    # OR for a patch (0.0.2)
-    npm version patch
+    git status
+    # Should say "nothing to commit, working tree clean"
     ```
 
-2.  **Publish**:
+2.  **Bump Version**:
+    Run one of the following commands. This will automatically:
+    - Bump the version in `package.json` and `package-lock.json`
+    - Run `lint` and `format`
+    - **Commit** the version bump
+    - **Tag** the commit
+    - **Push** the commit and tags to GitHub (via `postversion` script)
+
+    ```bash
+    # For a patch release (e.g., 0.2.6 -> 0.2.7) - Use this for bug fixes
+    npm version patch
+    
+    # For a minor release (e.g., 0.2.6 -> 0.3.0) - Use this for new features
+    npm version minor
+    ```
+
+3.  **Publish**:
     This will automatically run `npm run build`, `npm test`, and `npm run lint` before uploading.
     ```bash
     npm publish
     ```
-
-    *Note: If the name `vibechck` is taken (unlikely, we checked), you may need to scope it (e.g., `@yourname/vibechck`) in `package.json`.*
+    *Note: If the push in step 2 failed (e.g. auth issues), strictly run `git push --follow-tags` before publishing.*
 
 4.  **Handling 2FA** (If enabled):
     Most accounts have Two-Factor Authentication (2FA) enabled for publishing.
@@ -55,5 +69,5 @@ Since `vibechck` is achieving its first public release, starting with **0.1.0** 
            //registry.npmjs.org/:_authToken=your_token_here
            ```
 
-3.  **Verification**:
+## 4. Verification Check
     Check [npmjs.com/package/vibechck](https://www.npmjs.com/package/vibechck) to see your package live!
