@@ -548,9 +548,25 @@ export class ArchitectureScanner implements AnalysisModule, VibechckPlugin {
     // This is a heuristic regex and won't be perfect without AST, but sufficient for "vibe checking"
     const numberRegex = /\b\d+(\.\d+)?\b/g;
 
+    let inGoDeclarationBlock = false;
+    let inString: string | null = null;
+
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
       const trimmedLine = line.trim();
+
+      // Go const/var block detection
+      if (language === 'go') {
+        if (/^\s*(const|var)\s*\(/.test(line)) {
+          inGoDeclarationBlock = true;
+          continue;
+        }
+        if (inGoDeclarationBlock && /^\s*\)/.test(line)) {
+          inGoDeclarationBlock = false;
+          continue;
+        }
+        if (inGoDeclarationBlock) continue;
+      }
 
       // Skip comments
       if (trimmedLine.startsWith('//') || trimmedLine.startsWith('#') || trimmedLine.startsWith('*')) continue;
@@ -566,7 +582,7 @@ export class ArchitectureScanner implements AnalysisModule, VibechckPlugin {
       if (language === 'python' && /^\s*[A-Z_]+\s*=/.test(line)) continue; // Python caps constant assignment
 
       let processedLine = '';
-      let inString: string | null = null;
+
       for (let j = 0; j < line.length; j++) {
         const char = line[j];
         const prev = j > 0 ? line[j - 1] : '';
@@ -577,12 +593,25 @@ export class ArchitectureScanner implements AnalysisModule, VibechckPlugin {
             inString = null;
           }
         } else {
+          // Check for inline comments if not in string
+          if (line.substring(j).startsWith('//')) break;
+
           if (char === '"' || char === "'" || char === '`') {
             inString = char;
             processedLine += ' ';
           } else {
             processedLine += char;
           }
+        }
+      }
+
+      // Safety: For single/double quotes, reset at end of line unless escaped (Python triple quotes not handled yet)
+      // This prevents a missing quote from eating the rest of the file
+      if (inString === '"' || inString === "'") {
+        // Check for line continuation? For now, simplistic reset for non-backticks
+        // But wait, what if line ends with \?
+        if (!line.trim().endsWith('\\')) {
+          inString = null;
         }
       }
 

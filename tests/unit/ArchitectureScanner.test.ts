@@ -112,4 +112,49 @@ describe('ArchitectureScanner Magic Numbers', () => {
         expect(magicNumberAlerts).toHaveLength(1);
         expect(magicNumberAlerts[0].message).toContain('2048');
     });
+
+    it('should ignore numbers in Go const and var blocks', async () => {
+        const file = 'src/retry.go';
+        const content = `
+            package main
+            const (
+                DefaultPort = 8080
+                MaxRetries  = 3
+            )
+            var (
+                Timeout = 500
+            )
+            func main() {
+                val := 999
+            }
+        `;
+        mockReadFile.mockResolvedValue(content);
+
+        const alerts = await scanner.analyze([file], mockConfig);
+        const magicNumberAlerts = alerts.filter(a => a.rule === 'magic-number');
+
+        // 8080, 3, 500 are in blocks. 999 is raw.
+        expect(magicNumberAlerts).toHaveLength(1);
+        expect(magicNumberAlerts[0].message).toContain('999');
+    });
+
+    it('should ignore numbers in multiline strings', async () => {
+        const file = 'src/query.go';
+        const content = `
+            query := \`
+                SELECT * FROM users
+                WHERE age > 18
+                AND status = 1
+            \`
+            val := 999
+        `;
+        mockReadFile.mockResolvedValue(content);
+
+        const alerts = await scanner.analyze([file], mockConfig);
+        const magicNumberAlerts = alerts.filter(a => a.rule === 'magic-number');
+
+        // 18 and 1 are in backticks. 100 is raw.
+        expect(magicNumberAlerts).toHaveLength(1);
+        expect(magicNumberAlerts[0].message).toContain('999');
+    });
 });
