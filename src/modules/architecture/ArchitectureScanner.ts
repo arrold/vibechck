@@ -46,7 +46,9 @@ export class ArchitectureScanner implements AnalysisModule, VibechckPlugin {
     // Analyze each file
     for (const file of sourceFiles) {
       // Allow ignoring the entire architecture module (or specific file for it)
-      if (isRuleIgnored('architecture', file, config)) continue;
+      if (isRuleIgnored('architecture', file, config)) {
+        continue;
+      }
 
       try {
         const content = await fs.readFile(file, 'utf-8');
@@ -62,13 +64,8 @@ export class ArchitectureScanner implements AnalysisModule, VibechckPlugin {
         const fileAlerts = await this.analyzeFile(context);
         alerts.push(...fileAlerts);
       } catch (error) {
-        // Graceful failure for single files
-        // Check if error is "Invalid argument" (often file read/buffer issue)
-        const msg = error instanceof Error ? error.message : String(error);
-        if (msg.includes('Invalid argument') || msg.includes('EINVAL')) {
-          // Log as debug info or very minor warning
-          // For now, we just say "Skipping"
-          // console.warn(`Skipping ${file} due to file system constraints.`);
+        if ((error as any).code === 'ENOENT') {
+          // Skip missing files - could be deleted during scan
         } else {
           console.warn(`Analysis error on ${file}`);
           if (error instanceof Error) {
@@ -552,27 +549,48 @@ export class ArchitectureScanner implements AnalysisModule, VibechckPlugin {
     const numberRegex = /\b\d+(\.\d+)?\b/g;
 
     for (let i = 0; i < lines.length; i++) {
-      const line = lines[i].trim();
+      const line = lines[i];
+      const trimmedLine = line.trim();
 
       // Skip comments
-      if (line.startsWith('//') || line.startsWith('#') || line.startsWith('*')) continue;
+      if (trimmedLine.startsWith('//') || trimmedLine.startsWith('#') || trimmedLine.startsWith('*')) continue;
 
       // Skip import/require/include lines usually
-      if (line.startsWith('import') || line.startsWith('require') || line.startsWith('include'))
+      if (trimmedLine.startsWith('import') || trimmedLine.startsWith('require') || trimmedLine.startsWith('include'))
         continue;
 
       // Skip const/let/var declarations (defining constants is GOOD)
       // e.g. const MAX_USERS = 1000; -> 1000 is allowed here.
-      if (/^(const|let|var|final|static|readonly)\s+/.test(line)) continue;
-      if (language === 'python' && /^[A-Z_]+\s*=/.test(line)) continue; // Python caps constant assignment
+      // Handled with whitespace flexibility for indented code and Go
+      if (/^\s*(const|let|var|final|static|readonly)\s+/.test(line)) continue;
+      if (language === 'python' && /^\s*[A-Z_]+\s*=/.test(line)) continue; // Python caps constant assignment
+
+      let processedLine = '';
+      let inString: string | null = null;
+      for (let j = 0; j < line.length; j++) {
+        const char = line[j];
+        const prev = j > 0 ? line[j - 1] : '';
+
+        if (inString) {
+          processedLine += ' '; // Replace string content with spaces
+          if (char === inString && prev !== '\\') {
+            inString = null;
+          }
+        } else {
+          if (char === '"' || char === "'" || char === '`') {
+            inString = char;
+            processedLine += ' ';
+          } else {
+            processedLine += char;
+          }
+        }
+      }
 
       let match;
-      while ((match = numberRegex.exec(line)) !== null) {
+      numberRegex.lastIndex = 0; // Reset regex state for each line
+      while ((match = numberRegex.exec(processedLine)) !== null) {
         const num = match[0];
         if (!safeNumbers.has(num)) {
-          // Heuristic: Filter out array indices or obvious innocuous usages if possible
-          // For now, raw detection.
-
           alerts.push({
             id: `magic-number-${Date.now()}-${i}-${match.index}`,
             severity: AlertSeverity.LOW,

@@ -1,9 +1,11 @@
+import * as path from 'path';
 import { Report, Alert, AlertSeverity } from '../types/index.js';
 
 export class SarifFormatter {
   generateSarifReport(report: Report): string {
     const rules = this.getRules(report.alerts);
-    const results = report.alerts.map((alert) => this.convertAlertToResult(alert));
+    const baseDir = path.resolve(report.scanInfo.directory);
+    const results = report.alerts.map((alert) => this.convertAlertToResult(alert, baseDir));
 
     const sarif = {
       version: '2.1.0',
@@ -54,7 +56,16 @@ export class SarifFormatter {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private convertAlertToResult(alert: Alert): any {
+  private convertAlertToResult(alert: Alert, baseDir: string): any {
+    // Convert absolute path to relative path for SARIF portability
+    let relativePath = alert.file;
+    if (path.isAbsolute(alert.file)) {
+      relativePath = path.relative(baseDir, alert.file);
+    }
+
+    // Ensure forward slashes for URI consistency
+    const uri = relativePath.split(path.sep).join('/');
+
     return {
       ruleId: alert.rule,
       level: this.mapSeverityToLevel(alert.severity),
@@ -65,7 +76,7 @@ export class SarifFormatter {
         {
           physicalLocation: {
             artifactLocation: {
-              uri: alert.file,
+              uri: uri,
             },
             region: {
               startLine: alert.line,
