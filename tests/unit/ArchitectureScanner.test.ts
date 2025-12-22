@@ -157,4 +157,26 @@ describe('ArchitectureScanner Magic Numbers', () => {
         expect(magicNumberAlerts).toHaveLength(1);
         expect(magicNumberAlerts[0].message).toContain('999');
     });
+
+    it('should ignore Go blocks with comments and octal numbers', async () => {
+        const file = 'pkg/common/constants.go';
+        const content = `package common
+
+const (
+	// DefaultFileMode is the default permission for generated files (rw-r--r--)
+	DefaultFileMode = 0644
+
+	// DefaultDirMode is the default permission for directories (rwxr-xr-x)
+	DefaultDirMode = 0755
+
+	// PrivateFileMode is the permission for sensitive state/config files (rw-------)
+	PrivateFileMode = 0600
+)`;
+        mockReadFile.mockResolvedValue(content);
+
+        const alerts = await scanner.analyze([file], mockConfig);
+        const magicNumberAlerts = alerts.filter(a => a.rule === 'magic-number');
+
+        expect(magicNumberAlerts).toHaveLength(0);
+    });
 });
